@@ -1,0 +1,38 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env_local/
+ENV/
+
+# Generated data
+data/*
+!data/.gitkeep
+
+# Model checkpoints
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+
+# C++ build folders
+build/
+cmake-build-*/
+cpp_astar/build/
+CMakeFiles/
+CMakeCache.txt
+compile_commands.json
+
+# Logs
+logs/
+*.log
+
+# VS Code
+.vscode/
