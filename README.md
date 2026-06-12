@@ -52,7 +52,7 @@ gridnav/
 - 理解 GridWorld 中状态、动作、障碍物、起点和终点的表示方式。
 - 扎实掌握 A* 的搜索逻辑、代价函数和启发式函数。
 - 理解专家轨迹如何从规划算法转化为监督学习数据。
-- 掌握机器学习中的特征、标签、训练集、测试集、泛化和 baseline 的作用。
+- 掌握机器学习中的特征、标签、训练集、测试集、泛化与 baseline 的作用。
 - 通过行为克隆理解“模仿专家策略”为什么可以写成监督学习问题。
 - 熟悉 PyTorch 中 forward、loss、backward 和 optimizer.step 的基本训练流程。
 - 理解 Q-learning 中 state、action、reward、policy、Q(s,a) 和探索策略的关系。
