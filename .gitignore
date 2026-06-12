@@ -13,7 +13,7 @@ env_local/
 ENV/
 
 # Generated data
-data/*
+data/*.csv
 !data/.gitkeep
 
 # Model checkpoints
