@@ -418,10 +418,27 @@ Codex 在执行任务时应：
 
 ## 当前推荐下一步
 
-当前项目应优先完成 Stage 1 的收尾：
+当前进度：
 
-1. 整理 `notes/01_astar_notes.md`。
-2. 可选创建 `scripts/debug_astar_trace.py` 理解搜索过程。
-3. 确认 A* demo 可运行。
-4. 提交阶段 1 学习笔记。
-5. 然后进入 Stage 2：专家轨迹数据生成。
+- Stage 1：GridWorld + A* 路径规划，已完成。
+- Stage 2：随机地图专家轨迹数据生成，已完成。
+- 当前准备进入 Stage 3：传统机器学习 baseline。
+
+Stage 3 当前任务范围：
+
+1. 读取 `data/expert_dataset.csv`。
+2. 使用八个 state 特征预测 `action`：
+   - `agent_x`
+   - `agent_y`
+   - `goal_x`
+   - `goal_y`
+   - `obs_up`
+   - `obs_down`
+   - `obs_left`
+   - `obs_right`
+3. 按 `map_id` 划分训练集和测试集，避免同一张地图的样本同时出现在两边造成数据泄漏。
+4. 训练并比较 KNN、Logistic Regression 和 Decision Tree。
+5. 输出 action 分类 accuracy、confusion matrix 和简单对比报告。
+6. 更新 Stage 3 学习笔记，解释数据划分、模型差异和评估结果。
+
+Stage 3 暂时只做单步 action prediction baseline，不进入 PyTorch、强化学习或完整导航 rollout。
