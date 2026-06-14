@@ -16,7 +16,7 @@ GridNav 是一个小型 GridWorld 导航学习项目。
 - Q-learning 如何通过与环境交互学习动作价值。
 - C++ A* 如何把算法落实到更接近工程实现的层面。
 
-当前已完成 GridWorld、Python A*、专家数据生成、传统机器学习 baseline、PyTorch 行为克隆和 Stage 4.5：BC Rollout Evaluation。
+当前已完成 GridWorld、Python A*、专家数据生成、传统机器学习 baseline、PyTorch 行为克隆、Stage 4.5 BC Rollout Evaluation、Q-learning 和 C++ A*。
 
 ## 推进路线
 
@@ -69,6 +69,8 @@ gridnav/
 - Stage 3：传统机器学习 baseline 已完成收尾验收。
 - Stage 4：PyTorch Behavior Cloning 已完成。
 - Stage 4.5：BC Rollout Evaluation 已完成。
-- 下一阶段：Stage 5 Q-learning 强化学习。
+- Stage 5：Q-learning 强化学习已完成。
+- Stage 6：C++ A* 工程实现已完成。
+- 下一阶段：Stage 7 最终整理与汇报。
 
-Stage 4.5 只加载 Stage 4 的 BC policy 做 closed-loop 评估，不使用 reward，也不更新策略。Stage 5 Q-learning 才会通过 reward 与环境交互并学习策略。
+Stage 6 使用 C++17、`priority_queue` 和 `unordered_map` 重新实现与 Python demo 对应的 A*，重点是理解路径规划算法的工程表达。本阶段不是机器学习或强化学习。
