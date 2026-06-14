@@ -1,10 +1,10 @@
-# Closed-Loop Rollout Evaluation 学习笔记
+# Stage 4.5：BC Rollout Evaluation 学习笔记
 
 ## Rollout 是什么
 
 我现在把 rollout 理解成让模型真正从起点开始运行。模型每一步都根据当前 state 预测 action，环境根据这个动作更新位置，然后模型再根据新的位置预测下一步，直到到达 goal 或失败。
 
-Stage 4 的测试会把专家数据中的一个 state 单独交给模型，检查这一小步 action 是否预测正确。Stage 5 不再逐条检查独立样本，而是让同一个 BC policy 连续控制整个导航过程。
+Stage 4 的测试会把专家数据中的一个 state 单独交给模型，检查这一小步 action 是否预测正确。Stage 4.5 不再逐条检查独立样本，而是让同一个 BC policy 连续控制整个导航过程。
 
 ## 什么是 closed-loop evaluation
 
@@ -64,12 +64,12 @@ max_steps_exceeded: 0
 
 ## 为什么这不是强化学习
 
-这次没有根据 rollout 成功或失败更新模型，也没有 reward、Q-value、探索或策略优化。评估脚本只是加载 Stage 4 已经训练好的 BC policy，观察它在环境中的表现。
+这次没有根据 rollout 成功或失败更新模型，也没有 reward、Q-value、探索或策略优化。评估脚本只是加载 Stage 4 已经训练好的 BC policy，观察它在环境中的表现，不会更新策略。
 
-所以 Stage 5 是模型评估，不是训练，更不是强化学习。
+所以 Stage 4.5 是模型评估，不是训练，更不是强化学习。原始 Stage 5 仍然是 Q-learning；Stage 5 才会通过 reward 与环境交互并学习策略。
 
-## Stage 3、Stage 4 和 Stage 5 的关系
+## Stage 3、Stage 4、Stage 4.5 和 Stage 5 的关系
 
-Stage 3 使用传统机器学习模型做单步动作分类，建立 baseline。Stage 4 使用 PyTorch MLP 做同一个 `state -> action` 单步分类任务。Stage 5 则把 Stage 4 的模型放回环境中，检查单步预测能力能否转化成完整导航能力。
+Stage 3 使用传统机器学习模型做单步动作分类，建立 baseline。Stage 4 使用 PyTorch MLP 做同一个 `state -> action` 单步分类任务。Stage 4.5 把 Stage 4 的模型放回环境中，只检查单步预测能力能否转化成完整导航能力。Stage 5 Q-learning 则会使用 reward 学习新的策略。
 
 这次结果让我更清楚地看到：单步 accuracy 很重要，但它不是导航任务的最终答案。Rollout success rate 和 failure reasons 能揭示分类报告中不容易直接看到的错误累积问题。

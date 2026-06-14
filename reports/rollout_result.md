@@ -1,8 +1,8 @@
-# BC Policy Rollout Evaluation 结果
+# Stage 4.5：BC Rollout Evaluation 结果
 
 ## 评估目标
 
-评估 Stage 4 训练出的 Behavior Cloning policy 能否在 GridWorld 中从 start 开始，根据自己的预测动作一步步走到 goal。这是 closed-loop rollout evaluation，不是训练，也不是强化学习。
+Stage 4.5 评估 Stage 4 训练出的 Behavior Cloning policy 能否在 GridWorld 中从 start 开始，根据自己的预测动作一步步走到 goal。这是 closed-loop rollout evaluation，不是训练，也不是强化学习。
 
 ## 评估设置
 
@@ -63,5 +63,6 @@
 
 - Single-step accuracy 衡量独立测试状态上的动作预测正确率；rollout success rate 衡量模型连续使用自己预测的动作后，最终到达 goal 的比例。
 - 单步错误会改变后续状态，模型可能进入专家数据中较少出现的位置，因此较高的 single-step accuracy 不保证较高的 rollout success rate。
-- 当前只加载 Stage 4 BC policy 做评估，没有训练新策略。
-- 当前不是强化学习，也没有实现 Q-learning。
+- Stage 4.5 只加载 Stage 4 BC policy 做评估，没有训练新策略，也不更新策略。
+- Stage 4.5 不使用 reward，不是强化学习。
+- 原始 Stage 5 仍然是 Q-learning 强化学习；Stage 5 才会通过 reward 与环境交互并学习策略。

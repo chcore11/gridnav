@@ -12,10 +12,11 @@ GridNav 是一个小型 GridWorld 导航学习项目。
 - 如何把 A* 生成的路径转成专家轨迹数据。
 - 传统机器学习 baseline 如何从特征和标签中学习动作。
 - PyTorch 行为克隆如何用神经网络模仿专家策略。
+- BC Rollout Evaluation 如何检查单步动作预测能否转化为完整导航能力。
 - Q-learning 如何通过与环境交互学习动作价值。
 - C++ A* 如何把算法落实到更接近工程实现的层面。
 
-当前已完成 GridWorld、Python A*、专家数据生成和传统机器学习 baseline，并已完成 Stage 3 收尾验收。
+当前已完成 GridWorld、Python A*、专家数据生成、传统机器学习 baseline、PyTorch 行为克隆和 Stage 4.5：BC Rollout Evaluation。
 
 ## 推进路线
 
@@ -24,9 +25,10 @@ GridNav 是一个小型 GridWorld 导航学习项目。
 3. 用 A* 生成专家轨迹数据。
 4. 构建机器学习 baseline，学习从状态特征预测动作。
 5. 用 PyTorch 实现行为克隆模型和训练流程。
-6. 实现 Q-learning，让智能体通过奖励信号学习。
-7. 用 C++ 重新实现 A*，理解算法在工程语言中的组织方式。
-8. 整理实验图表、报告、笔记和问题。
+6. 完成 Stage 4.5：BC Rollout Evaluation。
+7. 实现 Q-learning，让智能体通过奖励信号学习。
+8. 用 C++ 重新实现 A*，理解算法在工程语言中的组织方式。
+9. 整理实验图表、报告、笔记和问题。
 
 ## 项目结构
 
@@ -37,6 +39,7 @@ gridnav/
 ├── planning_astar/       # Python A* 规划实验
 ├── ml_baseline/          # 传统机器学习 baseline
 ├── bc_pytorch/           # PyTorch 行为克隆实验
+├── rollout/              # BC policy closed-loop rollout evaluation
 ├── rl_qlearning/         # Q-learning 强化学习实验
 ├── cpp_astar/            # C++ A* 实现
 ├── figures/              # 图表和可视化结果
@@ -64,6 +67,8 @@ gridnav/
 - Stage 1：GridWorld + A* 已完成。
 - Stage 2：专家轨迹数据生成已完成。
 - Stage 3：传统机器学习 baseline 已完成收尾验收。
-- Stage 4：PyTorch 行为克隆尚未开始。
+- Stage 4：PyTorch Behavior Cloning 已完成。
+- Stage 4.5：BC Rollout Evaluation 已完成。
+- 下一阶段：Stage 5 Q-learning 强化学习。
 
-当前 ML baseline 使用八个 state 特征预测 A* 专家的下一步 action，属于 single-step action prediction。它还没有进行完整导航 rollout，因此当前 accuracy 不能解释为模型已经会导航。
+Stage 4.5 只加载 Stage 4 的 BC policy 做 closed-loop 评估，不使用 reward，也不更新策略。Stage 5 Q-learning 才会通过 reward 与环境交互并学习策略。
