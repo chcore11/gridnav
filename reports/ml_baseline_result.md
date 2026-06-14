@@ -6,11 +6,10 @@
 
 ## 数据与划分
 
-当前数据来自 Stage 2 生成的 `data/expert_dataset.csv`，由 A* 在随机 GridWorld 地图中生成专家路径后拆分为 state-action 样本。
-
+- 数据来源：Stage 2 使用 A* 在随机 GridWorld 地图中生成专家路径，再拆分为 state-action 样本。
 - 数据文件：`data/expert_dataset.csv`
-- 特征：`agent_x, agent_y, goal_x, goal_y, obs_up, obs_down, obs_left, obs_right`
-- 标签：`action`，编码为 `0 = up`、`1 = down`、`2 = left`、`3 = right`
+- 特征 X：`agent_x, agent_y, goal_x, goal_y, obs_up, obs_down, obs_left, obs_right`
+- 标签 y：`action`，编码为 `0 = up`、`1 = down`、`2 = left`、`3 = right`
 - 总地图数：98
 - 总样本数：970
 - 训练地图数：78
@@ -38,7 +37,7 @@
 | Logistic Regression | 0.8557 |
 | Decision Tree | 0.7732 |
 
-最佳模型是 **Logistic Regression**，测试集 action accuracy 为 **0.8557**。
+在 single-step action prediction 上，最佳模型是 **Logistic Regression**，测试集 action accuracy 为 **0.8557**。
 
 混淆矩阵图保存于 `figures/ml_baseline_confusion_matrix.png`，图中同时包含三个模型，行表示真实动作，列表示预测动作。
 
@@ -132,11 +131,6 @@ weighted avg       0.77      0.77      0.77       194
 - Classification report 分动作展示 precision、recall 和 F1-score，可以帮助发现只看总 accuracy 时看不到的类别差异。
 - Confusion matrix 可以直接看到每个真实动作容易被误判成哪个动作。
 - 当前 state 只包含位置、目标位置和局部障碍，不包含完整地图；不同地图中相同特征可能对应不同的 A* 动作。
-- 当前只评估单步分类，没有进行完整导航 rollout，因此 action accuracy 高不代表导航一定成功。
-
-## 下一步建议
-
-- 继续分析三个 baseline 的混淆矩阵，理解哪些动作容易混淆。
-- 当前只完成 single-step action prediction，不代表模型已经能完整导航。
-- 下一步可以做模型 rollout，测试模型从 start 到 goal 的实际导航成功率。
-- 再之后才进入 PyTorch 行为克隆。
+- Logistic Regression 在当前测试集的单步 action prediction 上表现最好。
+- 当前没有进行完整导航 rollout，因此 action accuracy 高不代表模型已经会导航。
+- 本阶段没有进入 PyTorch、行为克隆或强化学习。

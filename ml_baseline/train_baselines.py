@@ -192,9 +192,10 @@ def write_report(dataset, train_map_ids, test_map_ids, y_train, y_test, results)
 
 ## 数据与划分
 
+- 数据来源：Stage 2 使用 A* 在随机 GridWorld 地图中生成专家路径，再拆分为 state-action 样本。
 - 数据文件：`data/expert_dataset.csv`
-- 特征：`{", ".join(FEATURE_COLUMNS)}`
-- 标签：`action`，编码为 `0 = up`、`1 = down`、`2 = left`、`3 = right`
+- 特征 X：`{", ".join(FEATURE_COLUMNS)}`
+- 标签 y：`action`，编码为 `0 = up`、`1 = down`、`2 = left`、`3 = right`
 - 总地图数：{dataset["map_id"].nunique()}
 - 总样本数：{len(dataset)}
 - 训练地图数：{len(train_map_ids)}
@@ -220,7 +221,7 @@ def write_report(dataset, train_map_ids, test_map_ids, y_train, y_test, results)
 | --- | ---: |
 {summary_rows}
 
-最佳模型是 **{best_model}**，测试集 action accuracy 为 **{results[best_model]["accuracy"]:.4f}**。
+在 single-step action prediction 上，最佳模型是 **{best_model}**，测试集 action accuracy 为 **{results[best_model]["accuracy"]:.4f}**。
 
 混淆矩阵图保存于 `figures/ml_baseline_confusion_matrix.png`，图中同时包含三个模型，行表示真实动作，列表示预测动作。
 
@@ -231,7 +232,9 @@ def write_report(dataset, train_map_ids, test_map_ids, y_train, y_test, results)
 - Classification report 分动作展示 precision、recall 和 F1-score，可以帮助发现只看总 accuracy 时看不到的类别差异。
 - Confusion matrix 可以直接看到每个真实动作容易被误判成哪个动作。
 - 当前 state 只包含位置、目标位置和局部障碍，不包含完整地图；不同地图中相同特征可能对应不同的 A* 动作。
-- 当前只评估单步分类，没有进行完整导航 rollout，因此 action accuracy 高不代表导航一定成功。
+- Logistic Regression 在当前测试集的单步 action prediction 上表现最好。
+- 当前没有进行完整导航 rollout，因此 action accuracy 高不代表模型已经会导航。
+- 本阶段没有进入 PyTorch、行为克隆或强化学习。
 """
     REPORT_PATH.write_text(report, encoding="utf-8")
 

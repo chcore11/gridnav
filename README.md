@@ -15,7 +15,7 @@ GridNav 是一个小型 GridWorld 导航学习项目。
 - Q-learning 如何通过与环境交互学习动作价值。
 - C++ A* 如何把算法落实到更接近工程实现的层面。
 
-当前仓库只建立初始结构和文档，后续代码会按阶段逐步实现。
+当前已完成 GridWorld、Python A*、专家数据生成和传统机器学习 baseline，并已完成 Stage 3 收尾验收。
 
 ## 推进路线
 
@@ -61,4 +61,9 @@ gridnav/
 
 ## 当前状态
 
-已初始化项目结构和学习文档。核心代码尚未实现。
+- Stage 1：GridWorld + A* 已完成。
+- Stage 2：专家轨迹数据生成已完成。
+- Stage 3：传统机器学习 baseline 已完成收尾验收。
+- Stage 4：PyTorch 行为克隆尚未开始。
+
+当前 ML baseline 使用八个 state 特征预测 A* 专家的下一步 action，属于 single-step action prediction。它还没有进行完整导航 rollout，因此当前 accuracy 不能解释为模型已经会导航。
