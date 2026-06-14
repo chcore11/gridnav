@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "expert_dataset.csv"
 REPORT_PATH = ROOT / "reports" / "bc_pytorch_result.md"
 FIGURE_PATH = ROOT / "figures" / "bc_training_curve.png"
+CHECKPOINT_PATH = ROOT / "checkpoints" / "bc_policy.pt"
 
 FEATURE_COLUMNS = [
     "agent_x",
@@ -39,6 +40,12 @@ BATCH_SIZE = 64
 EPOCHS = 100
 LEARNING_RATE = 0.001
 LR_BASELINE_ACCURACY = 0.8557
+MODEL_CONFIG = {
+    "input_dim": 8,
+    "hidden_dims": [64, 32],
+    "output_dim": 4,
+    "layers": ["Linear(8, 64)", "ReLU", "Linear(64, 32)", "ReLU", "Linear(32, 4)"],
+}
 
 
 class ExpertActionDataset(Dataset):
@@ -54,14 +61,17 @@ class ExpertActionDataset(Dataset):
 
 
 class BehaviorCloningMLP(nn.Module):
-    def __init__(self):
+    def __init__(self, model_config=MODEL_CONFIG):
         super().__init__()
+        input_dim = model_config["input_dim"]
+        hidden_dim_1, hidden_dim_2 = model_config["hidden_dims"]
+        output_dim = model_config["output_dim"]
         self.network = nn.Sequential(
-            nn.Linear(8, 64),
+            nn.Linear(input_dim, hidden_dim_1),
             nn.ReLU(),
-            nn.Linear(64, 32),
+            nn.Linear(hidden_dim_1, hidden_dim_2),
             nn.ReLU(),
-            nn.Linear(32, 4),
+            nn.Linear(hidden_dim_2, output_dim),
         )
 
     def forward(self, features):
@@ -135,7 +145,7 @@ def prepare_datasets(train_data, test_data):
         test_features,
         test_data[LABEL_COLUMN].to_numpy(),
     )
-    return train_dataset, test_dataset
+    return train_dataset, test_dataset, feature_mean, feature_std
 
 
 def build_data_loaders(train_dataset, test_dataset):
@@ -225,6 +235,32 @@ def save_training_curve(train_losses):
     plt.close(figure)
 
 
+def save_checkpoint(
+    model,
+    feature_mean,
+    feature_std,
+    train_map_ids,
+    test_map_ids,
+    final_train_loss,
+    test_accuracy,
+):
+    CHECKPOINT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    checkpoint = {
+        "model_state_dict": model.state_dict(),
+        "feature_mean": torch.tensor(feature_mean, dtype=torch.float32),
+        "feature_std": torch.tensor(feature_std, dtype=torch.float32),
+        "feature_columns": list(FEATURE_COLUMNS),
+        "train_map_ids": [int(map_id) for map_id in train_map_ids],
+        "test_map_ids": [int(map_id) for map_id in test_map_ids],
+        "random_seed": int(RANDOM_SEED),
+        "model_config": MODEL_CONFIG,
+        "torch_version": str(torch.__version__),
+        "final_train_loss": float(final_train_loss),
+        "test_accuracy": float(test_accuracy),
+    }
+    torch.save(checkpoint, CHECKPOINT_PATH)
+
+
 def confusion_matrix_markdown(matrix):
     rows = [
         "| actual \\ predicted | up | down | left | right |",
@@ -288,6 +324,7 @@ Linear(32, 4)
 - Final train loss：`{train_losses[-1]:.6f}`
 
 训练曲线保存于 `figures/bc_training_curve.png`。
+用于 rollout 评估的 checkpoint 保存于 `checkpoints/bc_policy.pt`，其中包含模型权重、标准化参数、特征顺序和训练/测试地图 ID。
 
 ## 测试结果
 
@@ -309,7 +346,7 @@ Linear(32, 4)
 
 - 当前 PyTorch BC 使用神经网络模仿 A* 专家的单步动作。
 - 当前结果可以与 Stage 3 Logistic Regression baseline 比较，但模型更复杂不保证 accuracy 一定更高。
-- 当前没有进行 rollout，因此不能说模型已经会完整导航。
+- 当前 Stage 4 训练与单步分类评估本身没有进行 rollout；完整导航能力由 Stage 5 单独评估。
 - 本阶段没有进入强化学习。
 """
     REPORT_PATH.write_text(report, encoding="utf-8")
@@ -319,13 +356,25 @@ def main():
     set_random_seed()
     dataset = load_dataset()
     train_data, test_data, train_map_ids, test_map_ids = split_by_map_id(dataset)
-    train_dataset, test_dataset = prepare_datasets(train_data, test_data)
+    train_dataset, test_dataset, feature_mean, feature_std = prepare_datasets(
+        train_data,
+        test_data,
+    )
     train_loader, test_loader = build_data_loaders(train_dataset, test_dataset)
 
     model = BehaviorCloningMLP()
     train_losses = train_model(model, train_loader)
     evaluation = evaluate_model(model, test_loader)
     save_training_curve(train_losses)
+    save_checkpoint(
+        model,
+        feature_mean,
+        feature_std,
+        train_map_ids,
+        test_map_ids,
+        train_losses[-1],
+        evaluation["accuracy"],
+    )
     write_report(
         dataset,
         train_data,
@@ -346,6 +395,7 @@ def main():
     print(evaluation["confusion_matrix"])
     print(f"训练曲线：{FIGURE_PATH.relative_to(ROOT)}")
     print(f"报告：{REPORT_PATH.relative_to(ROOT)}")
+    print(f"Checkpoint：{CHECKPOINT_PATH.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

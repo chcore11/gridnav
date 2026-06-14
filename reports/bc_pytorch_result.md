@@ -39,6 +39,7 @@ Linear(32, 4)
 - Final train loss：`0.169001`
 
 训练曲线保存于 `figures/bc_training_curve.png`。
+用于 rollout 评估的 checkpoint 保存于 `checkpoints/bc_policy.pt`，其中包含模型权重、标准化参数、特征顺序和训练/测试地图 ID。
 
 ## 测试结果
 
@@ -74,5 +75,5 @@ weighted avg       0.88      0.88      0.87       194
 
 - 当前 PyTorch BC 使用神经网络模仿 A* 专家的单步动作。
 - 当前结果可以与 Stage 3 Logistic Regression baseline 比较，但模型更复杂不保证 accuracy 一定更高。
-- 当前没有进行 rollout，因此不能说模型已经会完整导航。
+- 当前 Stage 4 训练与单步分类评估本身没有进行 rollout；完整导航能力由 Stage 5 单独评估。
 - 本阶段没有进入强化学习。
