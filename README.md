@@ -16,7 +16,7 @@ GridNav 是一个小型 GridWorld 导航学习项目。
 - Q-learning 如何通过与环境交互学习动作价值。
 - C++ A* 如何把算法落实到更接近工程实现的层面。
 
-当前已完成 GridWorld、Python A*、专家数据生成、传统机器学习 baseline、PyTorch 行为克隆和 Stage 4.5 BC Rollout Evaluation。Stage 5 Q-learning 正在理解中，工程尚未开始。Stage 6 C++ A* 工程实现已提前完成，但当前学习主线暂不进入 Stage 6。
+当前已完成 GridWorld、Python A*、专家数据生成、传统机器学习 baseline、PyTorch 行为克隆、Stage 4.5 BC Rollout Evaluation，以及 Stage 5 tabular Q-learning 最小工程闭环。Stage 6 C++ A* 工程实现已提前完成，学习理解可在 Stage 5 完成后继续。
 
 ## 推进路线
 
@@ -69,10 +69,11 @@ gridnav/
 - Stage 3：传统机器学习 baseline 已完成收尾验收。
 - Stage 4：PyTorch Behavior Cloning 已完成。
 - Stage 4.5：BC Rollout Evaluation 已完成。
-- Stage 5：Q-learning 强化学习理解中，工程未开始。
-- Stage 6：C++ A* 工程实现已提前完成，学习理解暂缓。
-- 当前学习主线：继续 Stage 5，完成后再回到 Stage 6 理解。
+- Stage 5：Tabular Q-learning 最小工程闭环已完成。
+- Stage 6：C++ A* 工程实现已提前完成，学习理解可在 Stage 5 完成后继续。
 
 Stage 4.5 只加载 Stage 4 BC policy 做 BC Rollout Evaluation，不使用 reward，也不训练或更新策略，因此不是强化学习。
 
-Stage 5 尚缺 Q-learning 训练脚本、Q-table、reward 设计、epsilon-greedy、episode 训练循环、Q-table 更新公式、训练与评估结果、报告和图表。Stage 6 已使用 C++17、`priority_queue` 和 `unordered_map` 完成与 Python demo 对应的 A* 工程实现，但待 Stage 5 完成后再回到 Stage 6 学习和理解。
+Stage 5 使用固定 `6 x 6` 地图完成 tabular Q-learning 训练和 greedy policy 评估。训练共 `3000` 个 episode，reward 为到达 goal `+100`、碰撞 `-10`、普通移动 `-1`，greedy evaluation success rate 为 `100/100`，平均成功步数为 `10.00`。本阶段不使用专家 action，不使用 PyTorch，也不是 DQN。当前结果只说明策略在这张固定地图上学习成功，不代表具备随机地图泛化能力。
+
+Stage 6 已使用 C++17、`priority_queue` 和 `unordered_map` 完成与 Python demo 对应的 A* 工程实现。Stage 5 最小工程闭环完成后，可以继续 Stage 6 的学习和理解。
