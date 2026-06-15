@@ -8,16 +8,24 @@ GridNav 是一个用于学习路径规划、机器学习和强化学习基础知
 
 项目必须按照以下阶段逐步推进：
 
-1. GridWorld
-2. A*
-3. 专家数据
-4. ML baseline
-5. PyTorch BC
-6. Q-learning
-7. C++ A*
-8. 最终汇报
+1. Stage 1：GridWorld + A*
+2. Stage 2：Expert Dataset
+3. Stage 3：Traditional ML baseline
+4. Stage 4：PyTorch Behavior Cloning
+5. Stage 4.5：BC Rollout Evaluation
+6. Stage 5：Tabular Q-learning
+7. Stage 6：C++ A*
+8. Stage 7：Final Summary & Presentation
 
-不允许跳过阶段。开始下一阶段前，应先完成并理解当前阶段。
+Stage 4.5 只评估 Stage 4 已训练的 BC policy，不使用 reward，也不更新策略，因此不是强化学习。
+
+Stage 5 是固定地图上的 Tabular Q-learning 最小闭环，不使用专家 action，也不是 DQN；当前结果不代表随机地图泛化能力。
+
+Stage 6 是 C++ A* 工程实现，不是机器学习或强化学习阶段。
+
+Stage 7 是整理、复现说明统一和汇报材料准备阶段，不是新增技术功能阶段。
+
+当前项目处于 Stage 7：最终交付整理中。
 
 ## 每阶段要求
 
@@ -28,11 +36,15 @@ GridNav 是一个用于学习路径规划、机器学习和强化学习基础知
 - 笔记：记录学习过程和自己的理解。
 - 解释：能够说明代码为什么这样写，以及结果代表什么。
 
-## 开发规则
+## Codex 工作规则
 
-- 不要自动安装依赖。如果缺少依赖，应先说明情况。
-- 不要自动执行 `git commit` 或 `git push`。
-- 不要随便重构已有代码。修改应围绕当前阶段目标，并尽量保持范围小。
+- 每次开始任务前，先判断任务属于哪个 Stage。
+- 不跳阶段；开始下一阶段前，应先完成并理解当前阶段。
+- 如果任务跨阶段，先提醒并说明边界，再决定是否执行。
+- 不自动安装依赖；如果缺少依赖，应先说明情况。
+- 不自动执行 `git commit` 或 `git push`。
+- 不新增与当前阶段无关的功能。
+- 不随便重构已有代码；修改应围绕当前阶段目标，并尽量保持范围小。
 - 写代码要小步、清晰、可解释，避免不必要的复杂设计。
 
 ## 学习笔记风格

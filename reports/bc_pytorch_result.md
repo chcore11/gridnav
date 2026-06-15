@@ -75,5 +75,6 @@ weighted avg       0.88      0.88      0.87       194
 
 - 当前 PyTorch BC 使用神经网络模仿 A* 专家的单步动作。
 - 当前结果可以与 Stage 3 Logistic Regression baseline 比较，但模型更复杂不保证 accuracy 一定更高。
-- 当前 Stage 4 训练与单步分类评估本身没有进行 rollout；完整导航能力由 Stage 5 单独评估。
+- Stage 4 是 PyTorch Behavior Cloning 训练与 single-step action prediction 评估，本阶段本身没有进行 rollout。
+- 完整导航能力由 Stage 4.5 BC Rollout Evaluation 单独评估；Stage 4.5 只加载已训练的 BC policy，不使用 reward，也不更新策略。
 - 本阶段没有进入强化学习。
