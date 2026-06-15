@@ -16,7 +16,7 @@ GridNav 是一个小型 GridWorld 导航学习项目。
 - Q-learning 如何通过与环境交互学习动作价值。
 - C++ A* 如何把算法落实到更接近工程实现的层面。
 
-当前已完成 GridWorld、Python A*、专家数据生成、传统机器学习 baseline、PyTorch 行为克隆、Stage 4.5 BC Rollout Evaluation、Q-learning 和 C++ A*。
+当前已完成 GridWorld、Python A*、专家数据生成、传统机器学习 baseline、PyTorch 行为克隆和 Stage 4.5 BC Rollout Evaluation。Stage 5 Q-learning 正在理解中，工程尚未开始。Stage 6 C++ A* 工程实现已提前完成，但当前学习主线暂不进入 Stage 6。
 
 ## 推进路线
 
@@ -69,8 +69,10 @@ gridnav/
 - Stage 3：传统机器学习 baseline 已完成收尾验收。
 - Stage 4：PyTorch Behavior Cloning 已完成。
 - Stage 4.5：BC Rollout Evaluation 已完成。
-- Stage 5：Q-learning 强化学习已完成。
-- Stage 6：C++ A* 工程实现已完成。
-- 下一阶段：Stage 7 最终整理与汇报。
+- Stage 5：Q-learning 强化学习理解中，工程未开始。
+- Stage 6：C++ A* 工程实现已提前完成，学习理解暂缓。
+- 当前学习主线：继续 Stage 5，完成后再回到 Stage 6 理解。
 
-Stage 6 使用 C++17、`priority_queue` 和 `unordered_map` 重新实现与 Python demo 对应的 A*，重点是理解路径规划算法的工程表达。本阶段不是机器学习或强化学习。
+Stage 4.5 只加载 Stage 4 BC policy 做 BC Rollout Evaluation，不使用 reward，也不训练或更新策略，因此不是强化学习。
+
+Stage 5 尚缺 Q-learning 训练脚本、Q-table、reward 设计、epsilon-greedy、episode 训练循环、Q-table 更新公式、训练与评估结果、报告和图表。Stage 6 已使用 C++17、`priority_queue` 和 `unordered_map` 完成与 Python demo 对应的 A* 工程实现，但待 Stage 5 完成后再回到 Stage 6 学习和理解。
